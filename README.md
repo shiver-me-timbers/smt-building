@@ -48,7 +48,7 @@ final Integer result = builder.build();
 System.out.println(result); // 3
 ```
 
-Three builder implementation have been provided, each one evaluates the it's code `Block`s in a different order.
+Three builder implementations have been provided, each one evaluates it's code `Block`s in a different order.
 
 #### QueueBuilder
 
@@ -65,7 +65,7 @@ also allows the `Block`s to be sorted and/or unique.
 
 ```java
 // All Blocks will be ordered by their input.
-abstract class Ordered implements Block<Integer>, Comparable<Ordered> {
+abstract class OrderedBlock implements Block<Integer>, Comparable<Ordered> {
     private final Integer number;
     Ordered(Integer number) {
         this.number = number;
@@ -74,7 +74,7 @@ abstract class Ordered implements Block<Integer>, Comparable<Ordered> {
         return number.compareTo(that.number);
     }
 }
-class Addition extends Ordered {
+class Addition extends OrderedBlock {
     private final Integer number;
     Addition(Integer number) {
         super(number);
@@ -84,7 +84,7 @@ class Addition extends Ordered {
         return this.number + number;
     }
 }
-class Multiplication extends Ordered {
+class Multiplication extends OrderedBlock {
     private final Integer number;
     Multiplication(Integer number) {
         super(number);
