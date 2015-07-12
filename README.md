@@ -33,9 +33,8 @@ A library that can be used to simplify creating builders and fluent API's.
 ```
 ### Usage
 
-This library provides an API for creating `Builder`s by populating it with code `Block`s. Any added `Block`s will not be
-evaluated until the `build()` method is called, at which point all the `Block`s will be evalutated in the order dictated
-by the `Builder` implementation.
+This library provides an API for creating `Builder`s by populating them with code `Block`s. All `Block`s are evaluated
+when the `build()` method is called. They will be evaluated in the order dictated by the `Builder` implementation.
 
 ```java
 final Block<Integer> increment = new Block<Integer>() {
