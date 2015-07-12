@@ -5,7 +5,7 @@ package shiver.me.timbers.building;
  *
  * @author Karl Bennett
  */
-public interface Builder<T> {
+public interface Builder<T> extends Iterable<T> {
 
     /**
      * Add a new {@link Block} to be built.

@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.InOrder;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.hamcrest.Matchers.contains;
@@ -135,5 +136,14 @@ public class AbstractBuilderTest {
 
         // Then
         assertThat(actual, contains(resultOne, resultTwo, expected));
+    }
+
+    @Test
+    public void Can_remove_item_from_iterator() {
+
+        // Simply here ot provide full coverage.
+        final Iterator<Object> iterator = builder.addBlock(one).iterator();
+        iterator.next();
+        iterator.remove();
     }
 }

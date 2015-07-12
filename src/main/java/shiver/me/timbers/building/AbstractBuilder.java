@@ -5,17 +5,14 @@ import java.util.Iterator;
 /**
  * @author Karl Bennett
  */
-public abstract class AbstractBuilder<T> implements Builder<T>, Iterable<T> {
+public abstract class AbstractBuilder<T> implements Builder<T> {
 
     private final T subject;
     private final Iterable<Block<T>> blocks;
-    private Iterator<Block<T>> iterator;
-    private T result;
 
     public AbstractBuilder(Iterable<Block<T>> blocks, T subject) {
         this.blocks = blocks;
         this.subject = subject;
-        this.result = subject;
     }
 
     @Override
@@ -32,7 +29,7 @@ public abstract class AbstractBuilder<T> implements Builder<T>, Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new ResultIterator<>(blocks.iterator(), result);
+        return new ResultIterator<>(blocks.iterator(), subject);
     }
 
     private static class ResultIterator<T> implements Iterator<T> {
@@ -53,6 +50,11 @@ public abstract class AbstractBuilder<T> implements Builder<T>, Iterable<T> {
         @Override
         public T next() {
             return (result = iterator.next().build(result));
+        }
+
+        @Override
+        public void remove() {
+            iterator.remove();
         }
     }
 }
