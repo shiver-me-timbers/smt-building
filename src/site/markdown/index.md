@@ -29,8 +29,12 @@ A library that can be used to simplify creating builders and fluent API's.
 ```
 ### Usage
 
-This library provides an API for creating `Builder`s by populating them with code `Block`s. All `Block`s are evaluated
-when the `build()` method is called. They will be evaluated in the order dictated by the `Builder` implementation.
+This library provides an API for creating
+[`Builder`](https://github.com/shiver-me-timbers/smt-building/blob/master/src/main/java/shiver/me/timbers/building/Builder.java)s
+by populating them with code
+[`Block`](https://github.com/shiver-me-timbers/smt-building/blob/master/src/main/java/shiver/me/timbers/building/Block.java)s.
+All `Block`s are evaluated when the `build()` method is called. They will be evaluated in the order dictated by the
+`Builder` implementation.
 
 ```java
 final Block<Integer> increment = new Block<Integer>() {
@@ -39,22 +43,22 @@ final Block<Integer> increment = new Block<Integer>() {
     }
 };
 final Builder<Integer> builder = new CollectionBuilder<>(new ArrayList<Block<Integer>>(), 0);
-builder.addBlock(increment).addBlock(increment).addBlock(increment);
+builder.add(increment).add(increment).add(increment);
 final Integer result = builder.build();
 System.out.println(result); // 3
 ```
 
 Three builder implementations have been provided, each one evaluates it's code `Block`s in a different order.
 
-#### QueueBuilder
+#### [QueueBuilder](https://github.com/shiver-me-timbers/smt-building/blob/master/src/main/java/shiver/me/timbers/building/QueueBuilder.java)
 
 This builder will evaluate all it's code `Block`s in FIFO order.
 
-#### StackBuilder
+#### [StackBuilder](https://github.com/shiver-me-timbers/smt-building/blob/master/src/main/java/shiver/me/timbers/building/StackBuilder.java)
 
 This builder will evaluate all it's code `Block`s in LIFO order.
 
-#### CollectionBuilder
+#### [CollectionBuilder](https://github.com/shiver-me-timbers/smt-building/blob/master/src/main/java/shiver/me/timbers/building/CollectionBuilder.java)
 
 This builder will evaluate it's code `Block`s in the order specified by it's supplied `Collection` implementation. This
 also allows the `Block`s to be sorted and/or unique.
@@ -93,7 +97,53 @@ class Multiplication extends OrderedBlock {
 
 // Using TreeSet so that the Blocks will be unique and sorted.
 final Builder<Integer> builder = new CollectionBuilder<>(new TreeSet<Block<Integer>>(), 0);
-builder.addBlock(new Addition(3)).addBlock(new Addition(3)).addBlock(new Multiplication(2));
+builder.add(new Addition(3)).add(new Addition(3)).add(new Multiplication(2));
 final Integer result = builder.build();
 System.out.println(result); // 3
+```
+
+#### Iteration
+
+The `Builder` implements [`Iterable`](http://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html) so can be used
+within a `for` loop.
+
+```java
+for (Integer result : builder) {
+    System.out.println(result);
+}
+```
+
+If used in this way each result produced by the iterator will be the result of each individual `Block` as it is called.
+The `Block`s will be iterated over in the order dictated by the `Builder` or internal collection implementation.
+
+#### Specified Iteration
+
+It is also possible to state how many iterations should be run over the `Builder`. Any number of iterations can be
+requested, be it less than or greater than the number of `Block`s in the `Builder`.
+
+```java
+final Builder<Integer> builder = new CollectionBuilder<>(new ArrayList<Block<Integer>>(), 0);
+builder.add(new Addition(3)).add(new Addition(3)).add(new Multiplication(2));
+
+for (Integer result : builder.iterable(2)) {
+    System.out.println(result);
+}
+// 3
+// 6
+```
+
+As would be expected if you set the number of iterations to be less than the number of `Block`s then only that number of
+will be iterated over. Though, if you set a number iterations that is greater than the number of `Block`s then when the
+iterator has run to the end it will start back at the beginning taking the final result and feeding that back into the
+top of the `Block`s. This will be repeated until the request number of iterations has been completed.
+
+```java
+for (Integer result : builder.iterable(5)) {
+    System.out.println(result);
+}
+// 3
+// 6
+// 12
+// 15
+// 18
 ```

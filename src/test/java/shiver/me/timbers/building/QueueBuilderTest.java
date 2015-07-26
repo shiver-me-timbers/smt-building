@@ -9,15 +9,24 @@ import java.util.Queue;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 public class QueueBuilderTest {
+
+    @Test
+    public void Can_create_without_a_seed() {
+
+        // When
+        new QueueBuilder<>(new LinkedList<Block<Object>>());
+    }
 
     @Test
     @SuppressWarnings("unchecked")
     public void Can_build_multiple_blocks() {
 
-        final Object subject = new Object();
+        final Object seed = new Object();
         final Queue<Block<Object>> blocks = spy(new LinkedList<Block<Object>>());
 
         final Block<Object> one = mock(Block.class);
@@ -30,12 +39,12 @@ public class QueueBuilderTest {
         final Object expected = new Object();
 
         // Given
-        given(one.build(subject)).willReturn(resultOne);
+        given(one.build(seed)).willReturn(resultOne);
         given(two.build(resultOne)).willReturn(resultTwo);
         given(three.build(resultTwo)).willReturn(expected);
 
         // When
-        final Object actual = new QueueBuilder<>(blocks, subject).addBlock(one).addBlock(two).addBlock(three).build();
+        final Object actual = new QueueBuilder<>(blocks, seed).add(one).add(two).add(three).build();
 
         // Then
         assertThat(actual, equalTo(expected));

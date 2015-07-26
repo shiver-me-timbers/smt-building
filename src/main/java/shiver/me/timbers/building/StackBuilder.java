@@ -7,17 +7,21 @@ import java.util.Deque;
  *
  * @author Karl Bennett
  */
-public class StackBuilder<T> extends AbstractBuilder<T> implements Builder<T> {
+public class StackBuilder<T> extends CollectionBuilder<T> {
 
     private final Deque<Block<T>> blocks;
 
-    public StackBuilder(Deque<Block<T>> blocks, T subject) {
-        super(blocks, subject);
+    public StackBuilder(Deque<Block<T>> blocks) {
+        this(blocks, null);
+    }
+
+    public StackBuilder(Deque<Block<T>> blocks, T seed) {
+        super(blocks, seed);
         this.blocks = blocks;
     }
 
     @Override
-    public Builder<T> addBlock(Block<T> block) {
+    public Builder<T> add(Block<T> block) {
         this.blocks.push(block);
         return this;
     }

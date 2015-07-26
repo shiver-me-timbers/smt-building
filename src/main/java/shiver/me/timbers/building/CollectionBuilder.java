@@ -7,18 +7,27 @@ import java.util.Collection;
  *
  * @author Karl Bennett
  */
-public class CollectionBuilder<T> extends AbstractBuilder<T> implements Builder<T> {
+public class CollectionBuilder<T> extends IterableBuilder<T> implements Builder<T> {
 
     private final Collection<Block<T>> blocks;
 
-    public CollectionBuilder(Collection<Block<T>> blocks, T subject) {
-        super(blocks, subject);
+    public CollectionBuilder(Collection<Block<T>> blocks) {
+        this(blocks, null);
+    }
+
+    public CollectionBuilder(Collection<Block<T>> blocks, T seed) {
+        super(blocks, seed);
         this.blocks = blocks;
     }
 
     @Override
-    public Builder<T> addBlock(Block<T> block) {
+    public Builder<T> add(Block<T> block) {
         this.blocks.add(block);
         return this;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return blocks.isEmpty();
     }
 }

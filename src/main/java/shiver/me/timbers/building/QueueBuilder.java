@@ -7,17 +7,21 @@ import java.util.Queue;
  *
  * @author Karl Bennett
  */
-public class QueueBuilder<T> extends AbstractBuilder<T> {
+public class QueueBuilder<T> extends CollectionBuilder<T> {
 
     private final Queue<Block<T>> blocks;
 
-    public QueueBuilder(Queue<Block<T>> blocks, T subject) {
-        super(blocks, subject);
+    public QueueBuilder(Queue<Block<T>> blocks) {
+        this(blocks, null);
+    }
+
+    public QueueBuilder(Queue<Block<T>> blocks, T seed) {
+        super(blocks, seed);
         this.blocks = blocks;
     }
 
     @Override
-    public Builder<T> addBlock(Block<T> block) {
+    public Builder<T> add(Block<T> block) {
         this.blocks.offer(block);
         return this;
     }

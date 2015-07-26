@@ -7,5 +7,5 @@ package shiver.me.timbers.building;
  */
 public interface Block<T> {
 
-    T build(T subject);
+    T build(T result);
 }
