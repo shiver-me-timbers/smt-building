@@ -22,7 +22,7 @@ A library that can be used to simplify creating builders and fluent API's.
     <dependency>
         <groupId>com.github.shiver-me-timbers</groupId>
         <artifactId>smt-building</artifactId>
-        <version>1.0</version>
+        <version>1.2</version>
     </dependency>
 </dependencies>
 ```
