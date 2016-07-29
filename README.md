@@ -53,11 +53,11 @@ Three builder implementations have been provided, each one evaluates it's code `
 
 #### [QueueBuilder](src/main/java/shiver/me/timbers/building/QueueBuilder.java)
 
-This builder will evaluate all it's code `Block`s a FIFO order.
+This builder will evaluate all it's code `Block`s in FIFO order.
 
 #### [StackBuilder](src/main/java/shiver/me/timbers/building/StackBuilder.java)
 
-This builder will evaluate all it's code `Block`s a LIFO order.
+This builder will evaluate all it's code `Block`s in LIFO order.
 
 #### [CollectionBuilder](src/main/java/shiver/me/timbers/building/CollectionBuilder.java)
 
@@ -100,7 +100,8 @@ class Multiplication extends OrderedBlock {
 final Builder<Integer> builder = new CollectionBuilder<>(new TreeSet<Block<Integer>>(), 0);
 builder.add(new Addition(3)).add(new Addition(3)).add(new Multiplication(2));
 final Integer result = builder.build();
-System.out.println(result); // 3
+// Builder.blocks = {new Multiplication(2), new Addition(3)}
+System.out.println(result); // (0 * 2) + 3 = 3
 ```
 
 #### Iteration
@@ -136,7 +137,7 @@ for (Integer result : builder.iterable(2)) {
 As would be expected if you set the number of iterations to be less than the number of `Block`s then only that number of
 will be iterated over. Though, if you set a number iterations that is greater than the number of `Block`s then when the
 iterator has run to the end it will start back at the beginning taking the final result and feeding that back into the
-top of the `Block`s. This will be repeated until the request number of iterations has been completed.
+top of the `Block`s. This will be repeated until the requested number of iterations has been completed.
 
 ```java
 for (Integer result : builder.iterable(5)) {
